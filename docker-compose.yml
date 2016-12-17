@@ -1,0 +1,25 @@
+version: '2'
+
+services: 
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - nodeapp_data:/data/db
+    ports:
+      - 8016:27017
+
+  web:
+    build: .
+    ports:
+      - 3000:3000
+    volumes: 
+      - .:/usr/src/app
+    depends_on: 
+      - mongo
+    links: 
+      - mongo:mongodb
+    command: npm run start
+
+volumes:
+  nodeapp_data:
